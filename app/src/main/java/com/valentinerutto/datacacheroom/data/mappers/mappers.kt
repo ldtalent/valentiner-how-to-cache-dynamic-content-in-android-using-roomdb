@@ -17,5 +17,4 @@ fun mapResponseToEntity(newsResponse: NewsResponse): List<NewsEntity>? {
             content = news.content!!
         )
     }
-}else emptyList<NewsEntity>()
 }
