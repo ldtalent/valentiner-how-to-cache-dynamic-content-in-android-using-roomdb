@@ -1,11 +1,10 @@
 package com.valentinerutto.datacacheroom.di
 
 import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.valentinerutto.datacacheroom.App
 import com.valentinerutto.datacacheroom.data.local.NewsDatabase
-import com.valentinerutto.datacacheroom.data.remote.RetrofitClient.createOkClient
-import com.valentinerutto.datacacheroom.data.remote.RetrofitClient.createRetrofit
+import com.valentinerutto.datacacheroom.data.remote.api.RetrofitClient.createOkClient
+import com.valentinerutto.datacacheroom.data.remote.api.RetrofitClient.createRetrofit
 import com.valentinerutto.datacacheroom.data.remote.api.ApiService
 import com.valentinerutto.datacacheroom.utils.Constants
 import org.koin.android.ext.koin.androidContext
