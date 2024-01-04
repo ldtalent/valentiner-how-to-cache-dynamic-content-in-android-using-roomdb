@@ -1,7 +1,9 @@
 package com.valentinerutto.datacacheroom.data.mappers
 
 import com.valentinerutto.datacacheroom.data.local.entities.NewsEntity
+import com.valentinerutto.datacacheroom.data.remote.model.NewsArticle
 import com.valentinerutto.datacacheroom.data.remote.model.NewsResponse
+import kotlinx.serialization.json.JsonNull.content
 import kotlin.random.Random
 
 fun mapResponseToEntity(newsResponse: NewsResponse): List<NewsEntity>? {
@@ -17,4 +19,15 @@ fun mapResponseToEntity(newsResponse: NewsResponse): List<NewsEntity>? {
             content = news.content!!
         )
     }
+}
+fun mapEntitiytoNewsArticle(newsEntity: NewsEntity): NewsArticle {
+    return NewsArticle(
+        author = newsEntity.author,
+        title = newsEntity.title,
+        description = newsEntity.description,
+        sourceUrl = newsEntity.sourceUrl,
+        imageUrl = newsEntity.imageUrl,
+        publishedAt = newsEntity.publishedAt,
+        content = newsEntity.content
+    )
 }

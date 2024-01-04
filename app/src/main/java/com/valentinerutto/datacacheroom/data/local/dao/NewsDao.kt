@@ -9,9 +9,9 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface NewsDao {
     @Upsert
-    suspend fun saveNewsList(newsList:NewsEntity)
+    suspend fun saveNewsList(newsList:List<NewsEntity>?)
 
     @Query("SELECT * FROM newslist ")
-    suspend fun getNewsList():Flow<List<NewsEntity>>
+     fun getNewsList():List<NewsEntity>
 
 }
