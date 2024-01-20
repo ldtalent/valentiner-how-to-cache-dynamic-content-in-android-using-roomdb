@@ -65,6 +65,7 @@ dependencies {
     implementation("androidx.compose.material3:material3")
 
     implementation ("io.insert-koin:koin-android:3.4.3")
+    implementation ("io.insert-koin:koin-androidx-compose:3.4.3")
     // Room
     implementation ("androidx.room:room-runtime:2.6.1")
     kapt("androidx.room:room-compiler:2.6.1")

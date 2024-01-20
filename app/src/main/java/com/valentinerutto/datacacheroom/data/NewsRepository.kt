@@ -1,5 +1,6 @@
 package com.valentinerutto.datacacheroom.data
 
+import com.valentinerutto.datacacheroom.data.local.DatabaseHelper
 import com.valentinerutto.datacacheroom.data.local.dao.NewsDao
 import com.valentinerutto.datacacheroom.data.local.entities.NewsEntity
 import com.valentinerutto.datacacheroom.data.mappers.mapResponseToEntity
@@ -12,7 +13,7 @@ import retrofit2.HttpException
 import java.io.IOException
 
 class NewsRepository(
-    private val newsDao: NewsDao,
+    private val databaseHelper: DatabaseHelper,
     private val apiService: ApiService
 ) {
     suspend fun getBreakingNews(): Flow<Resource<List<NewsEntity>>> = flow {
@@ -28,12 +29,14 @@ class NewsRepository(
                 Resource.Error("something went wrong with server:")
             )
         }
-        emit(Resource.Success(newsDao.getNewsList()))
+        databaseHelper.getSavedArticles().collect{
+           emit( Resource.Success(it))
+        }
     }
 
     private suspend fun fetchAndSaveNews() {
         val remoteResponse = apiService.getBreakingNews(Constants.API_KEY)
-        newsDao.saveNewsList(mapResponseToEntity(remoteResponse.body()!!))
+        databaseHelper.insertAll(mapResponseToEntity(remoteResponse.body()!!)!!)
     }
 
 }

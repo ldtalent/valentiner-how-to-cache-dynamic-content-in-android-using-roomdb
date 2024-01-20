@@ -6,11 +6,8 @@ sealed class Resource<T> {
     class Loading<T> : Resource<T>()
 
 }
-sealed class NetworkResult<T>(
-    val data: T? = null,
-    val message: String? = null
-) {
-    class Success<T>(data: T) : NetworkResult<T>(data)
-    class Error<T>(message: String, data: T? = null) : NetworkResult<T>(data, message)
-    class Loading<T> : NetworkResult<T>()
+sealed class Result<out T : Any> {
+    data class Success<out T : Any>(val data: T) : Result<T>()
+    data class Error(val message: String) : Result<Nothing>()
+    object Loading : Result<Nothing>()
 }
