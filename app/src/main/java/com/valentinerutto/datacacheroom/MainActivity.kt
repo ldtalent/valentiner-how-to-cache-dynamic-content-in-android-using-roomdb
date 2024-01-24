@@ -10,21 +10,36 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.valentinerutto.datacacheroom.ui.MainView
 import com.valentinerutto.datacacheroom.ui.theme.DataCacheRoomTheme
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
+    private val viewmodel by viewModel<NewsViewModel>()
+    override fun onStart() {
+        super.onStart()
+        viewmodel.getNews()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
         setContent {
             DataCacheRoomTheme {
                 // A surface container using the 'background' color from the theme
+
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+
+                    MainView()
+
+            //        Greeting("Android")
                 }
             }
+
         }
     }
 }
@@ -41,6 +56,5 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     DataCacheRoomTheme {
-        Greeting("Android")
     }
 }
