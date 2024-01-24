@@ -38,7 +38,6 @@ fun MainView() {
     Column(modifier = Modifier.fillMaxSize()) {
         Greeting("Android")
 
-
         if (newsUiState.value.loading) {
             LoadingView()
         }
@@ -47,11 +46,9 @@ fun MainView() {
             ErrorScreen(modifier = Modifier.fillMaxSize(), newsUiState.value.error)
         }
 
-        if (!newsUiState.value.article.isNullOrEmpty()) {
+        if (newsUiState.value.article.isNotEmpty()) {
             NewsListScreen(newsEntity = newsUiState.value.article)
         }
-
-
     }
 
 }
