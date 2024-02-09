@@ -1,20 +1,27 @@
 package com.valentinerutto.datacacheroom
 
+import androidx.compose.runtime.Recomposer
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.valentinerutto.datacacheroom.data.NewsRepository
 import com.valentinerutto.datacacheroom.data.local.entities.NewsEntity
 import com.valentinerutto.datacacheroom.data.remote.Resource
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class NewsViewModel(private val newsRepository: NewsRepository) : ViewModel() {
-
-//     var _state by mutableStateOf(ArticleUiState())
-//     private set
-
+    var _createPostLiveData= MutableLiveData<String>()
+    val createPostLiveData: LiveData<String>
+        get()=_createPostLiveData
 //    private val _state = mutableStateOf(ArticleUiState())
 //    val state: State<ArticleUiState> = _state
 
@@ -24,12 +31,13 @@ init {
     getNews()
 }
 
-     fun getNews() = viewModelScope.launch {
+     fun getNews() = viewModelScope.launch(Dispatchers.IO) {
 
         newsRepository.getBreakingNews().collect {
 
             when (it) {
                 is Resource.Loading -> {
+
                     //  _state = ArticleUiState(loading = true)
                     setState {
                         copy(loading = true)
@@ -37,16 +45,19 @@ init {
                 }
 
                 is Resource.Success -> {
+                    _createPostLiveData.value = it.data.toString()
                     //   _state = ArticleUiState(article = it.data)
                     setState {
-                        copy(loading = true, article = it.data)
+                        copy(loading = false, article = it.data)
                     }
                 }
 
                 is Resource.Error -> {
+                    _createPostLiveData.value = it.errorMessage
+
                     // _state =   ArticleUiState(error = it.errorMessage)
                     setState {
-                        copy(loading = true, error = it.errorMessage)
+                        copy(loading = false, error = it.errorMessage)
                     }
                 }
             }

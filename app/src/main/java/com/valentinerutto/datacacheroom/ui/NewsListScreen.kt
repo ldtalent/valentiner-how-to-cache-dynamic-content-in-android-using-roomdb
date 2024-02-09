@@ -17,6 +17,8 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,12 +28,17 @@ import androidx.compose.ui.unit.dp
 import com.valentinerutto.datacacheroom.Greeting
 import com.valentinerutto.datacacheroom.NewsViewModel
 import com.valentinerutto.datacacheroom.data.local.entities.NewsEntity
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MainView(newsUiState: NewsViewModel.ArticleUiState) {
-
+val vm = koinViewModel<NewsViewModel>()
     Column(modifier = Modifier.fillMaxSize()) {
-        Greeting("News")
+        val test = vm.createPostLiveData.observeAsState().value
+
+        if (test != null) {
+            Greeting(test)
+        }
 
         if (newsUiState.loading) {
             LoadingView()
@@ -119,5 +126,5 @@ private fun PreviewNewsListScreen() {
             )
         )
     )
-    MainView(test)
+   // MainView(test)
 }

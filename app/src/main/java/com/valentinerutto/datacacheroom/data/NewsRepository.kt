@@ -35,7 +35,7 @@ class NewsRepository(
     }
 
     private suspend fun fetchAndSaveNews() {
-        val remoteResponse = apiService.getBreakingNews(Constants.API_KEY)
+        val remoteResponse = apiService.getBreakingNews()
         databaseHelper.insertAll(mapResponseToEntity(remoteResponse.body()!!)!!)
     }
 
