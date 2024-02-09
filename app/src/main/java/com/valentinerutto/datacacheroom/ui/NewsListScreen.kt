@@ -17,7 +17,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,27 +26,23 @@ import androidx.compose.ui.unit.dp
 import com.valentinerutto.datacacheroom.Greeting
 import com.valentinerutto.datacacheroom.NewsViewModel
 import com.valentinerutto.datacacheroom.data.local.entities.NewsEntity
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun MainView() {
-
-    val viewmodel = koinViewModel<NewsViewModel>()
-    val newsUiState = viewmodel.state.collectAsState()
+fun MainView(newsUiState: NewsViewModel.ArticleUiState) {
 
     Column(modifier = Modifier.fillMaxSize()) {
-        Greeting("Android")
+        Greeting("News")
 
-        if (newsUiState.value.loading) {
+        if (newsUiState.loading) {
             LoadingView()
         }
 
-        if (!newsUiState.value.error.isNullOrBlank()) {
-            ErrorScreen(modifier = Modifier.fillMaxSize(), newsUiState.value.error)
+        if (newsUiState.error.isNullOrBlank().not()) {
+            ErrorScreen(modifier = Modifier.fillMaxSize(), newsUiState.error)
         }
 
-        if (newsUiState.value.article.isNotEmpty()) {
-            NewsListScreen(newsEntity = newsUiState.value.article)
+        if (newsUiState.article.isNotEmpty()) {
+            NewsListScreen(newsEntity = newsUiState.article)
         }
     }
 
@@ -57,8 +52,7 @@ fun MainView() {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NewsListScreen(
-    modifier: Modifier = Modifier,
-    newsEntity: List<NewsEntity>
+    modifier: Modifier = Modifier, newsEntity: List<NewsEntity>
 ) {
 
     Box(modifier) {
@@ -101,8 +95,7 @@ fun ColumnScope.ErrorScreen(modifier: Modifier, errorMsg: String) {
         Button(
             onClick = {
                 // onTryAgainClicked()
-            },
-            modifier = Modifier
+            }, modifier = Modifier
                 .padding(16.dp)
                 .align(Alignment.CenterHorizontally)
         ) {
@@ -119,5 +112,12 @@ fun ColumnScope.ErrorScreen(modifier: Modifier, errorMsg: String) {
 @Preview(name = "NewsListScreen")
 @Composable
 private fun PreviewNewsListScreen() {
-    MainView()
+    val test = NewsViewModel.ArticleUiState(
+        false, listOf(
+            NewsEntity(
+                0, "ktn", "prosperity", "", "2.2.2024", "", "2.2.2024", "being disciplined"
+            )
+        )
+    )
+    MainView(test)
 }
