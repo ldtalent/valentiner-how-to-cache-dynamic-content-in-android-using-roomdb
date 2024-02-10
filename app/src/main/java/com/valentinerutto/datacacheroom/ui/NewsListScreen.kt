@@ -1,7 +1,6 @@
 package com.valentinerutto.datacacheroom.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
@@ -17,28 +16,21 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.valentinerutto.datacacheroom.Greeting
+import androidx.compose.ui.unit.sp
 import com.valentinerutto.datacacheroom.NewsViewModel
 import com.valentinerutto.datacacheroom.data.local.entities.NewsEntity
-import org.koin.androidx.compose.koinViewModel
+import com.valentinerutto.datacacheroom.data.mappers.mapResponseToEntity
 
 @Composable
 fun MainView(newsUiState: NewsViewModel.ArticleUiState) {
-val vm = koinViewModel<NewsViewModel>()
-    Column(modifier = Modifier.fillMaxSize()) {
-        val test = vm.createPostLiveData.observeAsState().value
 
-        if (test != null) {
-            Greeting(test)
-        }
+    Column(modifier = Modifier.fillMaxSize()) {
 
         if (newsUiState.loading) {
             LoadingView()
@@ -47,9 +39,12 @@ val vm = koinViewModel<NewsViewModel>()
         if (newsUiState.error.isNullOrBlank().not()) {
             ErrorScreen(modifier = Modifier.fillMaxSize(), newsUiState.error)
         }
+        if (!newsUiState.article?.status.isNullOrEmpty()) {
+            val mappedData = newsUiState.article?.let { mapResponseToEntity(it) }
 
-        if (newsUiState.article.isNotEmpty()) {
-            NewsListScreen(newsEntity = newsUiState.article)
+            if (mappedData != null) {
+                NewsListScreen(newsEntity = mappedData)
+            }
         }
     }
 
@@ -61,23 +56,30 @@ val vm = koinViewModel<NewsViewModel>()
 fun NewsListScreen(
     modifier: Modifier = Modifier, newsEntity: List<NewsEntity>
 ) {
+    Text(text = "NewsListScreen")
 
-    Box(modifier) {
-        Text(text = "NewsListScreen")
-        LazyColumn(modifier = Modifier.fillMaxHeight()) {
-            items(newsEntity) { news ->
-                NewsArticleItem(modifier = modifier.animateItemPlacement(), newsArticle = news)
-            }
+    LazyColumn(modifier = Modifier.fillMaxHeight()) {
+        items(newsEntity) { news ->
+            NewsArticleItem(
+                modifier = Modifier.padding(8.dp),
+                newsArticle = news
+            )
         }
+
     }
 }
 
 @Composable
 fun NewsArticleItem(modifier: Modifier, newsArticle: NewsEntity) {
     Card(modifier = modifier) {
-        Column {
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(2.dp)
+        ) {
             ImageComposable(imageUrl = newsArticle.imageUrl, modifier = modifier)
-            Text(text = newsArticle.content, style = MaterialTheme.typography.displayMedium)
+            Text(text = newsArticle.description, fontSize = 16.sp)
         }
     }
 }
@@ -116,15 +118,16 @@ fun ColumnScope.ErrorScreen(modifier: Modifier, errorMsg: String) {
     Spacer(modifier = Modifier.weight(0.5f))
 }
 
+val test = listOf(
+    NewsEntity(
+        0, "ktn", "prosperity", "", "2.2.2024", "", "2.2.2024", "being disciplined"
+    )
+
+)
+
 @Preview(name = "NewsListScreen")
 @Composable
 private fun PreviewNewsListScreen() {
-    val test = NewsViewModel.ArticleUiState(
-        false, listOf(
-            NewsEntity(
-                0, "ktn", "prosperity", "", "2.2.2024", "", "2.2.2024", "being disciplined"
-            )
-        )
-    )
-   // MainView(test)
+
+//    MainView(test)
 }
