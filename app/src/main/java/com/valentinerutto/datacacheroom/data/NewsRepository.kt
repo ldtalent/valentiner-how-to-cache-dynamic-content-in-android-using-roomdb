@@ -24,13 +24,13 @@ class NewsRepository(
 
     }
 
-    //   suspend fun getBreakingNews(): Flow<Resource<List<NewsEntity>>> = flow {
-    suspend fun getBreakingNews(): Flow<Resource<Response<NewsResponse>>> = flow {
+      suspend fun getBreakingNews(): Flow<Resource<List<NewsEntity>>> = flow {
+   // suspend fun getBreakingNews(): Flow<Resource<Response<NewsResponse>>> = flow {
         emit(Resource.Loading())
         try {
-            val response = apiService.getBreakingNews()
-            emit(Resource.Success(response))
-//
+//            val response = apiService.getBreakingNews()
+//            emit(Resource.Success(response))
+////
             fetchAndSaveNews()
 
         } catch (e: HttpException) {

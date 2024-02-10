@@ -39,12 +39,13 @@ fun MainView(newsUiState: NewsViewModel.ArticleUiState) {
         if (newsUiState.error.isNullOrBlank().not()) {
             ErrorScreen(modifier = Modifier.fillMaxSize(), newsUiState.error)
         }
-        if (!newsUiState.article?.status.isNullOrEmpty()) {
-            val mappedData = newsUiState.article?.let { mapResponseToEntity(it) }
-
-            if (mappedData != null) {
-                NewsListScreen(newsEntity = mappedData)
-            }
+        if (!newsUiState.article.isNullOrEmpty()) {
+//            val mappedData = newsUiState.article.let { mapResponseToEntity(it) }
+//
+//            if (mappedData != null) {
+//                NewsListScreen(newsEntity = mappedData)
+//            }
+            NewsListScreen(newsEntity = newsUiState.article)
         }
     }
 
