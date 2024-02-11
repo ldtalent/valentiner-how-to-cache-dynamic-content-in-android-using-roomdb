@@ -77,7 +77,7 @@ fun NewsArticleItem(modifier: Modifier, newsArticle: NewsEntity) {
                 .padding(2.dp)
         ) {
             ImageComposable(imageUrl = newsArticle.imageUrl, modifier = modifier)
-            Text(text = newsArticle.description, fontSize = 16.sp)
+            Text(text = newsArticle.title, fontSize = 16.sp)
         }
     }
 }
