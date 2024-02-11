@@ -4,8 +4,6 @@ import androidx.room.Room
 import com.valentinerutto.datacacheroom.App
 import com.valentinerutto.datacacheroom.NewsViewModel
 import com.valentinerutto.datacacheroom.data.NewsRepository
-import com.valentinerutto.datacacheroom.data.local.DatabaseHelper
-import com.valentinerutto.datacacheroom.data.local.DatabaseHelperImpl
 import com.valentinerutto.datacacheroom.data.local.NewsDatabase
 import com.valentinerutto.datacacheroom.data.remote.api.ApiService
 import com.valentinerutto.datacacheroom.data.remote.api.RetrofitClient.createOkClient
@@ -24,27 +22,17 @@ val appModules = module {
 
     single {
         createRetrofit(
-            baseUrl = Constants.BASE_URL,
-            get()
+            baseUrl = Constants.BASE_URL, get()
         )
     }
 
     single {
         Room.databaseBuilder(
-            androidContext(),
-            NewsDatabase::class.java, Constants.DB_NAME
+            androidContext(), NewsDatabase::class.java, Constants.DB_NAME
         ).build()
     }
 
     single { get<NewsDatabase>().newsDao }
-
-    fun provideDBHelper(db: NewsDatabase): DatabaseHelper {
-        return DatabaseHelperImpl(db)
-    }
-
-    single { provideDBHelper(get()) }
-
-    single { DatabaseHelperImpl(get()) }
 
     single { NewsRepository(get(), get()) }
 

@@ -28,14 +28,16 @@ class MainActivity : ComponentActivity() {
         setContent {
             DataCacheRoomTheme {
                 // A surface container using the 'background' color from the theme
-
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
 
+                    //viewmodel.getSavedNews()
+
                     val newsUiState = viewmodel.state.collectAsState()
 
                     MainView(newsUiState.value)
+
 
                 }
             }

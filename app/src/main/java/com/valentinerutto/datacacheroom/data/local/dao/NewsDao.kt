@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.valentinerutto.datacacheroom.data.local.entities.NewsEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface NewsDao {
@@ -14,7 +15,7 @@ interface NewsDao {
     fun saveNewsList(newsList: List<NewsEntity>)
 
     @Query("SELECT * FROM newslist ")
-    fun getNewsList(): List<NewsEntity>
+    fun getNewsList(): Flow<List<NewsEntity>>
 
     @Delete
     fun deleteBookmark(newsEntity: NewsEntity)

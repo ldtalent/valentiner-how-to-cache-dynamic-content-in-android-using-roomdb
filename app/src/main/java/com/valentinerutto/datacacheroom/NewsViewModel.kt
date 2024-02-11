@@ -20,8 +20,10 @@ class NewsViewModel(private val newsRepository: NewsRepository) : ViewModel() {
         getNews()
     }
 
-    suspend fun getNewsFromNetwork() {
-       getNews()
+     fun getNewsFromNetwork() {
+        viewModelScope.launch(Dispatchers.IO) {
+            newsRepository.fetchAndSaveNews()
+        }
     }
 
     fun getNews() = viewModelScope.launch(Dispatchers.IO) {
@@ -55,11 +57,13 @@ class NewsViewModel(private val newsRepository: NewsRepository) : ViewModel() {
         }
     }
 
-    suspend fun getSavedNews() {
+     fun getSavedNews() {
+         viewModelScope.launch(Dispatchers.IO) {
         newsRepository.getSavedNews().collect {
             setState {
                 copy(loading = false, article = it)
             }
+        }
         }
     }
 

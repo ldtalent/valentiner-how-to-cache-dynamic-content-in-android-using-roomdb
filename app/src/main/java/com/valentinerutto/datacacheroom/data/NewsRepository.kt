@@ -1,6 +1,6 @@
 package com.valentinerutto.datacacheroom.data
 
-import com.valentinerutto.datacacheroom.data.local.DatabaseHelper
+import com.valentinerutto.datacacheroom.data.local.dao.NewsDao
 import com.valentinerutto.datacacheroom.data.local.entities.NewsEntity
 import com.valentinerutto.datacacheroom.data.mappers.mapResponseToEntity
 import com.valentinerutto.datacacheroom.data.remote.Resource
@@ -9,11 +9,11 @@ import com.valentinerutto.datacacheroom.data.remote.model.NewsResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
-import retrofit2.Response
 import java.io.IOException
 
 class NewsRepository(
-    private val databaseHelper: DatabaseHelper, private val apiService: ApiService
+    private val apiService: ApiService,
+    private val newsDao: NewsDao
 ) {
 
     suspend fun getNewsFromNetwork(): Flow<Resource<NewsResponse>> {
@@ -24,14 +24,15 @@ class NewsRepository(
 
     }
 
-      suspend fun getBreakingNews(): Flow<Resource<List<NewsEntity>>> = flow {
-   // suspend fun getBreakingNews(): Flow<Resource<Response<NewsResponse>>> = flow {
+    suspend fun getBreakingNews(): Flow<Resource<List<NewsEntity>>> = flow {
+        // suspend fun getBreakingNews(): Flow<Resource<Response<NewsResponse>>> = flow {
         emit(Resource.Loading())
         try {
-//            val response = apiService.getBreakingNews()
-//            emit(Resource.Success(response))
-////
-            fetchAndSaveNews()
+            val response = apiService.getBreakingNews()
+
+            if (response.isSuccessful) {
+                newsDao.saveNewsList(mapResponseToEntity(response.body()!!)!!)
+            }
 
         } catch (e: HttpException) {
             emit(
@@ -42,18 +43,22 @@ class NewsRepository(
                 Resource.Error("something went wrong with server:")
             )
         }
-//        databaseHelper.getSavedArticles().collect {
-//            emit(Resource.Success(it))
-//        }
+
+        newsDao.getNewsList().collect {
+            emit(Resource.Success(it))
+        }
 
     }
 
-    private suspend fun fetchAndSaveNews() {
+    suspend fun fetchAndSaveNews() {
         val remoteResponse = apiService.getBreakingNews()
-        databaseHelper.insertAll(mapResponseToEntity(remoteResponse.body()!!)!!)
+
+        if (remoteResponse.isSuccessful) {
+            newsDao.saveNewsList(mapResponseToEntity(remoteResponse.body()!!)!!)
+        }
     }
 
     suspend fun getSavedNews(): Flow<List<NewsEntity>> {
-        return databaseHelper.getSavedArticles()
+        return flow { newsDao.getNewsList() }
     }
 }
