@@ -32,8 +32,6 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
 
-                    //viewmodel.getSavedNews()
-
                     val newsUiState = viewmodel.state.collectAsState()
 
                     MainView(newsUiState.value)

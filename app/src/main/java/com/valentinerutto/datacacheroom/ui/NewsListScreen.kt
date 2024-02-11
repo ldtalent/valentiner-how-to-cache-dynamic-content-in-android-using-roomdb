@@ -32,7 +32,6 @@ import com.valentinerutto.datacacheroom.data.mappers.mapResponseToEntity
 fun MainView(newsUiState: NewsViewModel.ArticleUiState) {
 
     Column(modifier = Modifier.fillMaxSize()) {
-        Greeting(name = newsUiState.article.toString())
 
         if (newsUiState.loading) {
             LoadingView()
@@ -41,12 +40,8 @@ fun MainView(newsUiState: NewsViewModel.ArticleUiState) {
         if (newsUiState.error.isNullOrBlank().not()) {
             ErrorScreen(modifier = Modifier.fillMaxSize(), newsUiState.error)
         }
+
         if (!newsUiState.article.isNullOrEmpty()) {
-//            val mappedData = newsUiState.article.let { mapResponseToEntity(it) }
-//
-//            if (mappedData != null) {
-//                NewsListScreen(newsEntity = mappedData)
-//            }
             NewsListScreen(newsEntity = newsUiState.article)
         }
     }

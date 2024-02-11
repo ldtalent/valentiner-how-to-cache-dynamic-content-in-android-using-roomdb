@@ -9,11 +9,12 @@ import retrofit2.http.Query
 interface ApiService {
     @GET("v2/top-headlines")
     suspend fun getBreakingNews(
-        @Query("sources")
-        sources: String = "bbc-news",
+        @Query("category")
+        category: String = "technology",
         @Query("page")
         pageNumber: Int = 1,
-    ): Response<NewsResponse>
+        @Query("pageSize") pageSize: Int = 100,
+        ): Response<NewsResponse>
 
     @GET("v2/everything")
     suspend fun searchForNews(

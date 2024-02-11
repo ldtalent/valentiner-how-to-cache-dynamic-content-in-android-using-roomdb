@@ -11,7 +11,7 @@ fun mapResponseToEntity(newsResponse: NewsResponse): List<NewsEntity>? {
         NewsEntity(
             id = Random.nextInt(),
             author = news?.author!!,
-            title = news.title!!,
+            title = news?.title!!,
             description = news.description!!,
             sourceUrl = news.url!!,
             imageUrl = news.urlToImage!!,
@@ -24,8 +24,8 @@ fun mapEntitiytoNewsArticle(newsEntity: NewsEntity): NewsArticle {
     return NewsArticle(
         author = newsEntity.author,
         title = newsEntity.title,
-        description = newsEntity.description,
-        sourceUrl = newsEntity.sourceUrl,
+        description = newsEntity.description!!,
+        sourceUrl = newsEntity.sourceUrl!!,
         imageUrl = newsEntity.imageUrl,
         publishedAt = newsEntity.publishedAt,
         content = newsEntity.content

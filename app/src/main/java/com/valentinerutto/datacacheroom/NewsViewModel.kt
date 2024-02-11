@@ -20,12 +20,6 @@ class NewsViewModel(private val newsRepository: NewsRepository) : ViewModel() {
         getNews()
     }
 
-     fun getNewsFromNetwork() {
-        viewModelScope.launch(Dispatchers.IO) {
-            newsRepository.fetchAndSaveNews()
-        }
-    }
-
     fun getNews() = viewModelScope.launch(Dispatchers.IO) {
 
         newsRepository.getBreakingNews().collect {
@@ -33,7 +27,6 @@ class NewsViewModel(private val newsRepository: NewsRepository) : ViewModel() {
             when (it) {
                 is Resource.Loading -> {
 
-                    //  _state = ArticleUiState(loading = true)
                     setState {
                         copy(loading = true)
                     }
@@ -41,7 +34,6 @@ class NewsViewModel(private val newsRepository: NewsRepository) : ViewModel() {
 
                 is Resource.Success -> {
                     setState {
-                        // copy(loading = false, article = it.data.body()!!)
                         copy(loading = false, article = it.data)
                     }
                 }
@@ -50,20 +42,8 @@ class NewsViewModel(private val newsRepository: NewsRepository) : ViewModel() {
                     setState {
                         copy(loading = false, error = it.errorMessage)
                     }
-
                 }
-
             }
-        }
-    }
-
-     fun getSavedNews() {
-         viewModelScope.launch(Dispatchers.IO) {
-        newsRepository.getSavedNews().collect {
-            setState {
-                copy(loading = false, article = it)
-            }
-        }
         }
     }
 
@@ -76,7 +56,6 @@ class NewsViewModel(private val newsRepository: NewsRepository) : ViewModel() {
     data class ArticleUiState(
         val loading: Boolean = false,
         val article: List<NewsEntity> = emptyList(),
-        // val article: NewsResponse? = null,
         val error: String = ""
     )
 }
