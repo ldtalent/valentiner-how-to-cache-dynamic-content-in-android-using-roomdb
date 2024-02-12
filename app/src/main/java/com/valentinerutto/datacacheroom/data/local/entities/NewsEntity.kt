@@ -1,6 +1,5 @@
 package com.valentinerutto.datacacheroom.data.local.entities
 
-import androidx.annotation.Nullable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -9,8 +8,8 @@ data class NewsEntity(
     @PrimaryKey val id: Int,
     val author: String,
     val title: String,
-    val description: String?,
-    val sourceUrl: String?,
+    val description: String,
+    val sourceUrl: String,
     val imageUrl: String,
     val publishedAt: String,
     val content: String
