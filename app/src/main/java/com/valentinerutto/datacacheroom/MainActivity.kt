@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
 import com.valentinerutto.datacacheroom.ui.MainView
 import com.valentinerutto.datacacheroom.ui.theme.DataCacheRoomTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -31,6 +32,9 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
+
+                    val navController = rememberNavController()
+
 
                     val newsUiState = viewmodel.state.collectAsState()
 
