@@ -5,15 +5,26 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.valentinerutto.datacacheroom.NewsViewModel
 import com.valentinerutto.datacacheroom.data.local.entities.NewsEntity
 
 @Composable
-fun NewsDetailScreen(newsEntity: NewsEntity, modifier: Modifier) {
+fun NewsDetailScreen(newsUiState: NewsViewModel.ArticleUiState,
+                     modifier: Modifier,
+                     newsItemPosition:Int) {
+
+    val newsItem = newsUiState.article[newsItemPosition]
+
     Box {
         Column {
-            ImageComposable(imageUrl = newsEntity.imageUrl, modifier = modifier)
-            Text(text = newsEntity.title)
-            Text(text = newsEntity.content)
+
+            ImageComposable(imageUrl = newsItem.imageUrl,
+                modifier = modifier)
+
+            Text(text = newsItem.title)
+
+            Text(text = newsItem.content)
         }
     }
+
 }
