@@ -9,11 +9,8 @@ import com.valentinerutto.datacacheroom.NewsViewModel
 import com.valentinerutto.datacacheroom.data.local.entities.NewsEntity
 
 @Composable
-fun NewsDetailScreen(newsUiState: NewsViewModel.ArticleUiState,
-                     modifier: Modifier,
-                     newsItemPosition:Int) {
-
-    val newsItem = newsUiState.article[newsItemPosition]
+fun NewsDetailScreen(newsItem: NewsEntity,
+                     modifier: Modifier) {
 
     Box {
         Column {
