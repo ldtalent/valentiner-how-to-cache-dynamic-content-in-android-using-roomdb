@@ -23,10 +23,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.valentinerutto.datacacheroom.Greeting
 import com.valentinerutto.datacacheroom.NewsViewModel
 import com.valentinerutto.datacacheroom.data.local.entities.NewsEntity
-import com.valentinerutto.datacacheroom.data.mappers.mapResponseToEntity
 
 @Composable
 fun MainView(newsUiState: NewsViewModel.ArticleUiState) {
@@ -54,16 +52,12 @@ fun MainView(newsUiState: NewsViewModel.ArticleUiState) {
 fun NewsListScreen(
     modifier: Modifier = Modifier, newsEntity: List<NewsEntity>
 ) {
-    Text(text = "NewsListScreen")
-
     LazyColumn(modifier = Modifier.fillMaxHeight()) {
         items(newsEntity) { news ->
             NewsArticleItem(
-                modifier = Modifier.padding(8.dp),
-                newsArticle = news
+                modifier = modifier.padding(8.dp), newsArticle = news
             )
         }
-
     }
 }
 

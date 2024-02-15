@@ -1,7 +1,7 @@
 package com.valentinerutto.datacacheroom.utils
 
 fun String?.orUnknown(unknown: String): String {
-    return this ?: unknown
+   return if (this.isNullOrEmpty()) unknown else this
 }
 
 fun <T> T?.orUnknown(defaultValue: T): T {
