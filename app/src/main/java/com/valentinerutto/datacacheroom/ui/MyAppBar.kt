@@ -16,6 +16,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyAppBar(navController: NavController) {
+
     val backStackEntry by navController.currentBackStackEntryAsState()
     val canNavigateBack = navController.previousBackStackEntry
     TopAppBar(title = { Text("My News") },

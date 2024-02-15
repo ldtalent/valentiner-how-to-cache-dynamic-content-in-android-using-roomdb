@@ -1,6 +1,7 @@
 package com.valentinerutto.datacacheroom.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
@@ -9,7 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
@@ -27,7 +28,9 @@ import com.valentinerutto.datacacheroom.NewsViewModel
 import com.valentinerutto.datacacheroom.data.local.entities.NewsEntity
 
 @Composable
-fun MainView(newsUiState: NewsViewModel.ArticleUiState) {
+fun MainView(newsUiState: NewsViewModel.ArticleUiState,
+             onNewsItemSelected: (newsItemPosition: Int) -> Unit,
+) {
 
     Column(modifier = Modifier.fillMaxSize()) {
 
@@ -40,7 +43,7 @@ fun MainView(newsUiState: NewsViewModel.ArticleUiState) {
         }
 
         if (!newsUiState.article.isNullOrEmpty()) {
-            NewsListScreen(newsEntity = newsUiState.article)
+            NewsListScreen(newsEntity = newsUiState.article, onNewsItemSelected = onNewsItemSelected)
         }
     }
 
@@ -50,12 +53,18 @@ fun MainView(newsUiState: NewsViewModel.ArticleUiState) {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NewsListScreen(
+    onNewsItemSelected: (newsItemPosition: Int) -> Unit,
     modifier: Modifier = Modifier, newsEntity: List<NewsEntity>
 ) {
     LazyColumn(modifier = Modifier.fillMaxHeight()) {
-        items(newsEntity) { news ->
+        itemsIndexed(newsEntity) { index, news ->
             NewsArticleItem(
-                modifier = modifier.padding(8.dp), newsArticle = news
+                modifier = modifier
+                    .padding(8.dp)
+                    .clickable {
+                        onNewsItemSelected(index)
+                    },
+                newsArticle = news
             )
         }
     }

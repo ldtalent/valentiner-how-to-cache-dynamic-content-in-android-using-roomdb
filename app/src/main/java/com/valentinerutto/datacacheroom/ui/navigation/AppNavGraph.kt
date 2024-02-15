@@ -11,26 +11,30 @@ import com.valentinerutto.datacacheroom.ui.NewsDetailScreen
 
 @Composable
 fun AppNavGraph(
-    navController: NavHostController, modifier: Modifier,
-    newsUiState: NewsViewModel.ArticleUiState
+    navController: NavHostController, modifier: Modifier, newsUiState: NewsViewModel.ArticleUiState
 ) {
     NavHost(
-        navController = navController, startDestination = Screen.NEWSLIST.name, modifier = modifier
+        navController = navController, startDestination =  NavigationItem.NewsList.route, modifier = modifier
     ) {
 
-        composable(route = Screen.NEWSLIST.name) {
-            MainView(newsUiState = newsUiState)
+        composable(route = NavigationItem.NewsList.route) {
+
+            MainView(newsUiState = newsUiState, onNewsItemSelected = {
+                val route = NavigationItem.NewsDetails.createRoute(it)
+                navController.navigate(route)
+            })
         }
 
-        composable(route = Screen.NEWSDETAILS.name) { backstackEntry ->
+        composable(route = NavigationItem.NewsDetails.route) { backstackEntry ->
 
-            val newsItemPosition = backstackEntry.arguments?.getInt("newsItemPosition")
+            val newsItemPosition = backstackEntry.arguments?.getInt("newsItemPosition") ?: 0
 
-            val newsItem = newsUiState.article[newsItemPosition!!]
+            val newsItem = newsUiState.article[newsItemPosition]
 
             NewsDetailScreen(
                 newsItem, modifier = modifier
             )
+
         }
     }
 }
