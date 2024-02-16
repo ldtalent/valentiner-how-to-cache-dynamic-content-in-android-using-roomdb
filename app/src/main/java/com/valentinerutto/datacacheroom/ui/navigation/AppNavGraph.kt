@@ -27,7 +27,7 @@ fun AppNavGraph(
 
         composable(route = NavigationItem.NewsDetails.route) { backstackEntry ->
 
-            val newsItemPosition = backstackEntry.arguments?.getInt("newsItemPosition") ?: 0
+            val newsItemPosition = backstackEntry.arguments?.getString("newsItemPosition")?.toInt() ?: 0
 
             val newsItem = newsUiState.article[newsItemPosition]
 
