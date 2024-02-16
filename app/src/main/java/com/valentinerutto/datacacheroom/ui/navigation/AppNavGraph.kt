@@ -30,9 +30,8 @@ fun AppNavGraph(
             val newsItemPosition = backstackEntry.arguments?.getString("newsItemPosition")?.toInt() ?: 0
 
             val newsItem = newsUiState.article[newsItemPosition]
-
             NewsDetailScreen(
-                newsItem, modifier = modifier
+                newsItem
             )
 
         }

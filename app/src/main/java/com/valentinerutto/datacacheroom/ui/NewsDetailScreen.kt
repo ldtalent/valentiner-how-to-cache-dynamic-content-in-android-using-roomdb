@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -14,18 +15,20 @@ import com.valentinerutto.datacacheroom.NewsViewModel
 import com.valentinerutto.datacacheroom.data.local.entities.NewsEntity
 
 @Composable
-fun NewsDetailScreen(newsItem: NewsEntity,
-                     modifier: Modifier) {
+fun NewsDetailScreen(newsItem: NewsEntity) {
+    Card(modifier = Modifier
+        .fillMaxWidth()
+        .padding(2.dp) ){
 
-    Box (modifier = Modifier.fillMaxSize().padding(2.dp)){
-        Column {
+        Column(
+        ) {
 
-                ImageComposable(imageUrl = newsItem.imageUrl, modifier = modifier)
-                Text(text = newsItem.title, fontSize = 16.sp)
-                Text(text = newsItem.description, fontSize = 16.sp)
-                Text(text = newsItem.content, fontSize = 16.sp)
-            }
+            ImageComposable(imageUrl = newsItem.imageUrl, modifier = Modifier.fillMaxWidth())
+            Text(text = newsItem.title, fontSize = 16.sp)
+            Text(text = newsItem.description, fontSize = 16.sp)
+            Text(text = newsItem.content, fontSize = 16.sp)
         }
 
 
+    }
 }
