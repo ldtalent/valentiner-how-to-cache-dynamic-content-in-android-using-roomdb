@@ -6,6 +6,7 @@ import com.valentinerutto.datacacheroom.data.mappers.mapResponseToEntity
 import com.valentinerutto.datacacheroom.data.remote.Resource
 import com.valentinerutto.datacacheroom.data.remote.api.ApiService
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
@@ -13,17 +14,28 @@ import java.io.IOException
 class NewsRepository(
     private val apiService: ApiService, private val newsDao: NewsDao
 ) {
-
+    private val newsFlow: Flow<List<NewsEntity>>
+        get() = newsDao.getNewsList()
 
     suspend fun getBreakingNews(): Flow<Resource<List<NewsEntity>>> = flow {
+
         emit(Resource.Loading())
-
         try {
-            val response = apiService.getBreakingNews()
+            val remoteResponse = apiService.getBreakingNews()
 
-            if (response.isSuccessful) {
-                newsDao.saveNewsList(mapResponseToEntity(response.body()!!)!!)
+            if (remoteResponse.isSuccessful.not()) {
+                emit(Resource.Error(remoteResponse.message()))
             }
+
+            val newsDetailsList = mapResponseToEntity(remoteResponse.body()!!)!!
+
+            newsDao.saveNewsList(newsDetailsList)
+
+//             newsFlow.collect {
+//                if (it.isNotEmpty()) {
+//                    emit(Resource.Success(it))
+//                }
+//            }
 
         } catch (e: HttpException) {
             emit(
@@ -41,15 +53,15 @@ class NewsRepository(
 
     }
 
-    suspend fun fetchAndSaveNews() {
+    private suspend fun fetchAndSaveNews() {
         val remoteResponse = apiService.getBreakingNews()
-
-        if (remoteResponse.isSuccessful) {
+        if (remoteResponse.isSuccessful.not()) {
             newsDao.saveNewsList(mapResponseToEntity(remoteResponse.body()!!)!!)
         }
     }
 
-    suspend fun getSavedNews(): Flow<List<NewsEntity>> {
+    private fun getSavedNews(): Flow<List<NewsEntity>> {
         return flow { newsDao.getNewsList() }
     }
+
 }

@@ -1,8 +1,13 @@
 package com.valentinerutto.datacacheroom.ui
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,9 +20,12 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -74,6 +82,7 @@ fun NewsListScreen(
 
 @Composable
 fun NewsArticleItem(modifier: Modifier, newsArticle: NewsEntity) {
+    val context = LocalContext.current
     Card(modifier = modifier) {
 
         Column(
@@ -81,20 +90,39 @@ fun NewsArticleItem(modifier: Modifier, newsArticle: NewsEntity) {
                 .fillMaxWidth()
                 .padding(2.dp)
         ) {
+            Spacer(modifier = Modifier.padding(1.dp))
+            Row(modifier = Modifier.fillMaxWidth()) {
+                Text(text = newsArticle.author, fontSize = 16.sp, textAlign = TextAlign.Start)
+                Text(text = newsArticle.publishedAt, fontSize = 16.sp, textAlign = TextAlign.End)
+            }
+            Spacer(modifier = Modifier.padding(1.dp))
+
             ImageComposable(imageUrl = newsArticle.imageUrl, modifier = modifier)
+            Spacer(modifier = Modifier.padding(2.dp))
             Text(text = newsArticle.title, fontSize = 16.sp)
+            Spacer(modifier = Modifier.padding(2.dp))
+
+            Text(text = newsArticle.sourceUrl, fontSize = 16.sp, modifier = Modifier.clickable {
+                val urlIntent = Intent(
+                    Intent.ACTION_VIEW, Uri.parse(newsArticle.sourceUrl)
+                )
+                context.startActivity(urlIntent)
+            })
+
         }
     }
 }
 
-
 @Composable
 fun LoadingView() {
-    CircularProgressIndicator(
-        modifier = Modifier.width(64.dp),
-        color = MaterialTheme.colorScheme.secondary,
-        trackColor = MaterialTheme.colorScheme.secondary,
-    )
+    Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+
+        CircularProgressIndicator(
+            modifier = Modifier.width(64.dp),
+            color = lightColorScheme().tertiary,
+            trackColor = darkColorScheme().tertiary,
+        )
+    }
 }
 
 @Composable
@@ -103,19 +131,18 @@ fun ErrorScreen(
 ) {
     val vm = koinViewModel<NewsViewModel>()
 
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+
         Text(
             text = errorMsg,
             textAlign = TextAlign.Center,
-            modifier = modifier.align(Alignment.CenterHorizontally),
+            modifier = modifier,
             style = MaterialTheme.typography.bodyMedium
         )
         Button(
             onClick = {
                 vm.getNews()
-            }, modifier = Modifier
-                .padding(4.dp)
-                .align(Alignment.CenterHorizontally)
+            }, modifier = Modifier.padding(4.dp)
         ) {
             Text(
                 text = "Try Again",

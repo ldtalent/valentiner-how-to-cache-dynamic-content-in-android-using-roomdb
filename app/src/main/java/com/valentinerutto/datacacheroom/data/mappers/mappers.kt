@@ -10,13 +10,13 @@ fun mapResponseToEntity(newsResponse: NewsResponse): List<NewsEntity>? {
     return newsResponse.articles?.map { news ->
         NewsEntity(
             id = Random.nextInt(),
-            author = news?.author.orUnknown("Author"),
-            title = news?.title.orUnknown("Title"),
-            description = news?.description.orUnknown("Description"),
+            author = news?.author.orUnknown(""),
+            title = news?.title.orUnknown(""),
+            description = news?.description.orUnknown(""),
             sourceUrl = news?.url.orUnknown(""),
             imageUrl = news?.urlToImage.orUnknown(""),
-            publishedAt = news?.publishedAt.orUnknown("Published Date"),
-            content = news?.content.orUnknown("Article Content")
+            publishedAt = news?.publishedAt.orUnknown(""),
+            content = news?.content.orUnknown("")
         )
     }
 }

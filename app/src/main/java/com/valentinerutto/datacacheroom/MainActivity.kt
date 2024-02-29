@@ -41,7 +41,6 @@ class MainActivity : ComponentActivity() {
 
                     Scaffold(topBar = { MyAppBar(navController = navController) }, content = {
 
-
                         AppNavGraph(
                             navController = navController,
                             modifier = Modifier
