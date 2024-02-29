@@ -2,6 +2,8 @@ package com.valentinerutto.datacacheroom.ui
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -109,18 +111,25 @@ fun NewsArticleItem(modifier: Modifier, newsArticle: NewsEntity) {
             Spacer(modifier = Modifier.padding(3.dp))
 
             Text(
-                text = newsArticle.sourceUrl,
+                text = "read more",
                 fontSize = 14.sp,
-                color = lightColorScheme().onSecondary,
-                modifier = Modifier.clickable {
-                    val urlIntent = Intent(
-                        Intent.ACTION_VIEW, Uri.parse(newsArticle.sourceUrl)
-                    )
-                    context.startActivity(urlIntent)
-                })
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.align(Alignment.End)
+            )
+            Spacer(modifier = Modifier.padding(1.dp))
+
 
         }
     }
+}
+
+@Composable
+fun openUrl(sourceUrl: String) {
+    val context = LocalContext.current
+    val urlIntent = Intent(
+        Intent.ACTION_VIEW, Uri.parse(sourceUrl)
+    )
+    context.startActivity(urlIntent)
 }
 
 @Composable
@@ -135,6 +144,7 @@ fun LoadingView() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ErrorScreen(
     modifier: Modifier, errorMsg: String

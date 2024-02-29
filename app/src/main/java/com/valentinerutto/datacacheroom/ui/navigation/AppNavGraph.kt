@@ -11,7 +11,7 @@ import com.valentinerutto.datacacheroom.ui.NewsDetailScreen
 
 @Composable
 fun AppNavGraph(
-    navController: NavHostController, modifier: Modifier, newsUiState: NewsViewModel.ArticleUiState
+    navController: NavHostController, modifier: Modifier, newsUiState: NewsViewModel.ArticleUiState,
 ) {
     NavHost(
         navController = navController, startDestination =  NavigationItem.NewsList.route, modifier = modifier

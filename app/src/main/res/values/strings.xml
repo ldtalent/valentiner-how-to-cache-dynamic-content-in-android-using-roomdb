@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">DataCacheRoom</string>
+    <string name="app_label_name">MyNews</string>
     <string name="photo">article picture</string>
 </resources>

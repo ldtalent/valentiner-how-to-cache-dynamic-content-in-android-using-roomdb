@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "com.valentinerutto.datacacheroom"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -58,6 +58,7 @@ dependencies {
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.compose.runtime:runtime-livedata")
+    implementation ("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.activity:activity-compose:1.8.2")

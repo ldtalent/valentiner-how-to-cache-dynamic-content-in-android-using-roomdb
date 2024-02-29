@@ -1,5 +1,7 @@
 package com.valentinerutto.datacacheroom
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.valentinerutto.datacacheroom.data.NewsRepository
@@ -16,10 +18,9 @@ class NewsViewModel(private val newsRepository: NewsRepository) : ViewModel() {
     private val _state = MutableStateFlow(ArticleUiState(loading = true))
     val state: StateFlow<ArticleUiState> = _state.asStateFlow()
 
-    init {
-        getNews()
-    }
 
+
+    @RequiresApi(Build.VERSION_CODES.O)
     fun getNews() = viewModelScope.launch(Dispatchers.IO) {
 
         newsRepository.getBreakingNews().collect {
@@ -43,6 +44,8 @@ class NewsViewModel(private val newsRepository: NewsRepository) : ViewModel() {
                         copy(loading = false, error = it.errorMessage)
                     }
                 }
+
+                else -> {}
             }
         }
     }

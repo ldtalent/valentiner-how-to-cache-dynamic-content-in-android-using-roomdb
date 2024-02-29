@@ -1,12 +1,13 @@
 package com.valentinerutto.datacacheroom.data
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.valentinerutto.datacacheroom.data.local.dao.NewsDao
 import com.valentinerutto.datacacheroom.data.local.entities.NewsEntity
 import com.valentinerutto.datacacheroom.data.mappers.mapResponseToEntity
 import com.valentinerutto.datacacheroom.data.remote.Resource
 import com.valentinerutto.datacacheroom.data.remote.api.ApiService
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
@@ -18,9 +19,10 @@ class NewsRepository(
         get() = newsDao.getNewsList()
 
     suspend fun getBreakingNews(): Flow<Resource<List<NewsEntity>>> = flow {
-
         emit(Resource.Loading())
+
         try {
+
             val remoteResponse = apiService.getBreakingNews()
 
             if (remoteResponse.isSuccessful.not()) {
@@ -31,11 +33,11 @@ class NewsRepository(
 
             newsDao.saveNewsList(newsDetailsList)
 
-//             newsFlow.collect {
-//                if (it.isNotEmpty()) {
-//                    emit(Resource.Success(it))
-//                }
-//            }
+            newsFlow.collect {
+                if (it.isNotEmpty()) {
+                    emit(Resource.Success(it))
+                }
+            }
 
         } catch (e: HttpException) {
             emit(
