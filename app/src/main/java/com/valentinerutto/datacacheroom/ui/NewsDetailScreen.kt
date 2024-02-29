@@ -15,21 +15,19 @@ import com.valentinerutto.datacacheroom.data.local.entities.NewsEntity
 
 @Composable
 fun NewsDetailScreen(newsItem: NewsEntity) {
-//    Card(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .padding(2.dp)
-//    ) {
-        Column {
-            ImageComposable(imageUrl = newsItem.imageUrl, modifier = Modifier.fillMaxWidth())
-            Spacer(modifier = Modifier.padding(2.dp))
-            Text(text = newsItem.title, fontSize = 16.sp)
-            Spacer(modifier = Modifier.padding(1.dp))
-            Text(text = newsItem.description, fontSize = 16.sp)
-            Spacer(modifier = Modifier.padding(1.dp))
-            Text(text = newsItem.content, fontSize = 16.sp)
-            Spacer(modifier = Modifier.padding(1.dp))
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(2.dp)
+    ) {
+        ImageComposable(imageUrl = newsItem.imageUrl, modifier = Modifier.fillMaxWidth())
+        Spacer(modifier = Modifier.padding(2.dp))
+        Text(text = newsItem.title, fontSize = 16.sp)
+        Spacer(modifier = Modifier.padding(1.dp))
+        Text(text = newsItem.sourceUrl, fontSize = 16.sp)
+        Spacer(modifier = Modifier.padding(1.dp))
+        Text(text = newsItem.content, fontSize = 16.sp)
+        Spacer(modifier = Modifier.padding(1.dp))
 
-        }
     }
-//}
+}

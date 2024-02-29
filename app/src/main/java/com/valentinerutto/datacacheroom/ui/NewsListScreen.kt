@@ -6,7 +6,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -91,23 +90,34 @@ fun NewsArticleItem(modifier: Modifier, newsArticle: NewsEntity) {
                 .padding(2.dp)
         ) {
             Spacer(modifier = Modifier.padding(1.dp))
-            Row(modifier = Modifier.fillMaxWidth()) {
-                Text(text = newsArticle.author, fontSize = 16.sp, textAlign = TextAlign.Start)
-                Text(text = newsArticle.publishedAt, fontSize = 16.sp, textAlign = TextAlign.End)
-            }
+            Text(
+                text = "Author: " + newsArticle.author,
+                fontSize = 16.sp,
+                textAlign = TextAlign.Start
+            )
+            Text(
+                text = "Date: " + newsArticle.publishedAt,
+                fontSize = 16.sp,
+                textAlign = TextAlign.Start
+            )
+
             Spacer(modifier = Modifier.padding(1.dp))
 
             ImageComposable(imageUrl = newsArticle.imageUrl, modifier = modifier)
             Spacer(modifier = Modifier.padding(2.dp))
             Text(text = newsArticle.title, fontSize = 16.sp)
-            Spacer(modifier = Modifier.padding(2.dp))
+            Spacer(modifier = Modifier.padding(3.dp))
 
-            Text(text = newsArticle.sourceUrl, fontSize = 16.sp, modifier = Modifier.clickable {
-                val urlIntent = Intent(
-                    Intent.ACTION_VIEW, Uri.parse(newsArticle.sourceUrl)
-                )
-                context.startActivity(urlIntent)
-            })
+            Text(
+                text = newsArticle.sourceUrl,
+                fontSize = 14.sp,
+                color = lightColorScheme().onSecondary,
+                modifier = Modifier.clickable {
+                    val urlIntent = Intent(
+                        Intent.ACTION_VIEW, Uri.parse(newsArticle.sourceUrl)
+                    )
+                    context.startActivity(urlIntent)
+                })
 
         }
     }

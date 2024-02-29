@@ -1,11 +1,15 @@
 package com.valentinerutto.datacacheroom.data.mappers
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.valentinerutto.datacacheroom.data.local.entities.NewsEntity
 import com.valentinerutto.datacacheroom.data.remote.model.NewsArticle
 import com.valentinerutto.datacacheroom.data.remote.model.NewsResponse
+import com.valentinerutto.datacacheroom.utils.dateFormat
 import com.valentinerutto.datacacheroom.utils.orUnknown
 import kotlin.random.Random
 
+@RequiresApi(Build.VERSION_CODES.O)
 fun mapResponseToEntity(newsResponse: NewsResponse): List<NewsEntity>? {
     return newsResponse.articles?.map { news ->
         NewsEntity(
@@ -15,7 +19,7 @@ fun mapResponseToEntity(newsResponse: NewsResponse): List<NewsEntity>? {
             description = news?.description.orUnknown(""),
             sourceUrl = news?.url.orUnknown(""),
             imageUrl = news?.urlToImage.orUnknown(""),
-            publishedAt = news?.publishedAt.orUnknown(""),
+            publishedAt = news?.publishedAt.dateFormat().orUnknown(""),
             content = news?.content.orUnknown("")
         )
     }

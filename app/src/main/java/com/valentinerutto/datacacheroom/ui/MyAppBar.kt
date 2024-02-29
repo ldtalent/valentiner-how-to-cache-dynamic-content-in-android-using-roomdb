@@ -1,12 +1,14 @@
 package com.valentinerutto.datacacheroom.ui
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Refresh
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.navigation.NavController
@@ -20,11 +22,15 @@ fun MyAppBar(navController: NavController) {
     val canNavigateBack = navController.previousBackStackEntry
     TopAppBar(title = { Text("My News") },
 
-        actions = {
-            IconButton(onClick = { navController.navigateUp() }) {
+        navigationIcon = {
+            IconButton(onClick = {
+                navController.navigateUp()
+            }) {
                 Icon(
-                    imageVector = Icons.Rounded.Refresh, contentDescription = "Refresh"
+                    imageVector = Icons.Filled.ArrowBack,
+                    contentDescription = "Back"
                 )
             }
-        })
+        },
+        colors = TopAppBarDefaults.mediumTopAppBarColors(containerColor = lightColorScheme().primaryContainer))
 }

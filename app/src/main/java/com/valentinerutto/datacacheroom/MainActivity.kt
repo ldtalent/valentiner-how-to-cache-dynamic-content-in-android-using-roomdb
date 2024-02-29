@@ -39,7 +39,9 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     val newsUiState = viewmodel.state.collectAsState()
 
-                    Scaffold(topBar = { MyAppBar(navController = navController) }, content = {
+                    Scaffold(topBar = {
+                        MyAppBar(navController = navController)
+                                      }, content = {
 
                         AppNavGraph(
                             navController = navController,
