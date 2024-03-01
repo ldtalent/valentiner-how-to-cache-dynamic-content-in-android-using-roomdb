@@ -26,7 +26,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
     private val viewmodel by viewModel<NewsViewModel>()
-    @RequiresApi(Build.VERSION_CODES.O)
+
     override fun onStart() {
         super.onStart()
         viewmodel.getNews()
@@ -40,23 +40,24 @@ class MainActivity : ComponentActivity() {
             DataCacheRoomTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
                     val newsUiState = viewmodel.state.collectAsState()
-val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-                    Scaffold(modifier = Modifier.fillMaxSize().nestedScroll(scrollBehavior.nestedScrollConnection),topBar = {
-                        MyAppBar(navController = navController,scrollBehavior)
-                                      }, content = {
+                    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+                    Scaffold(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .nestedScroll(scrollBehavior.nestedScrollConnection), topBar = {
+                            MyAppBar(navController = navController, scrollBehavior)
+                        }, content = {
 
-                        AppNavGraph(
-                            navController = navController,
-                            modifier = Modifier
-                                .padding(it),
-                            newsUiState = newsUiState.value
-                        )
-                    })
+                            AppNavGraph(
+                                navController = navController,
+                                modifier = Modifier.padding(it),
+                                newsUiState = newsUiState.value
+                            )
+                        })
 
                 }
 

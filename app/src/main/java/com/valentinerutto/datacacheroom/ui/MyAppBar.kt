@@ -13,6 +13,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.valentinerutto.datacacheroom.R
@@ -30,7 +31,7 @@ fun MyAppBar(navController: NavController, scrollBehavior: TopAppBarScrollBehavi
         }
     }
     TopAppBar(
-        title = { Text("My News") },
+        title = { Text(text = stringResource(id = R.string.app_label_name)) },
 
         navigationIcon =
         {

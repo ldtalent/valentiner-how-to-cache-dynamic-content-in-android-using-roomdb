@@ -27,11 +27,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.valentinerutto.datacacheroom.NewsViewModel
+import com.valentinerutto.datacacheroom.R
 import com.valentinerutto.datacacheroom.data.local.entities.NewsEntity
 import org.koin.androidx.compose.koinViewModel
 
@@ -83,7 +85,6 @@ fun NewsListScreen(
 
 @Composable
 fun NewsArticleItem(modifier: Modifier, newsArticle: NewsEntity) {
-    val context = LocalContext.current
     Card(modifier = modifier) {
 
         Column(
@@ -93,25 +94,24 @@ fun NewsArticleItem(modifier: Modifier, newsArticle: NewsEntity) {
         ) {
             Spacer(modifier = Modifier.padding(1.dp))
             Text(
-                text = "Author: " + newsArticle.author,
+                text = stringResource(R.string.author) + newsArticle.author,
                 fontSize = 16.sp,
                 textAlign = TextAlign.Start
             )
             Text(
-                text = "Date: " + newsArticle.publishedAt,
+                text = stringResource(R.string.date) + newsArticle.publishedAt,
                 fontSize = 16.sp,
                 textAlign = TextAlign.Start
             )
 
             Spacer(modifier = Modifier.padding(1.dp))
-
             ImageComposable(imageUrl = newsArticle.imageUrl, modifier = modifier)
             Spacer(modifier = Modifier.padding(2.dp))
             Text(text = newsArticle.title, fontSize = 16.sp)
             Spacer(modifier = Modifier.padding(3.dp))
 
             Text(
-                text = "read more",
+                text = stringResource(R.string.read_more),
                 fontSize = 14.sp,
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.align(Alignment.End)
