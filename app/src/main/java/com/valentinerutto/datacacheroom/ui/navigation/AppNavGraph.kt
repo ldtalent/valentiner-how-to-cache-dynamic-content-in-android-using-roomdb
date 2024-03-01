@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.valentinerutto.datacacheroom.NewsViewModel
+import com.valentinerutto.datacacheroom.ui.ErrorScreen
 import com.valentinerutto.datacacheroom.ui.MainView
 import com.valentinerutto.datacacheroom.ui.NewsDetailScreen
 
@@ -14,7 +15,9 @@ fun AppNavGraph(
     navController: NavHostController, modifier: Modifier, newsUiState: NewsViewModel.ArticleUiState,
 ) {
     NavHost(
-        navController = navController, startDestination =  NavigationItem.NewsList.route, modifier = modifier
+        navController = navController,
+        startDestination = NavigationItem.NewsList.route,
+        modifier = modifier
     ) {
 
         composable(route = NavigationItem.NewsList.route) {
@@ -27,7 +30,8 @@ fun AppNavGraph(
 
         composable(route = NavigationItem.NewsDetails.route) { backstackEntry ->
 
-            val newsItemPosition = backstackEntry.arguments?.getString("newsItemPosition")?.toInt() ?: 0
+            val newsItemPosition =
+                backstackEntry.arguments?.getString("newsItemPosition")?.toInt() ?: 0
 
             val newsItem = newsUiState.article[newsItemPosition]
             NewsDetailScreen(

@@ -18,9 +18,6 @@ class NewsViewModel(private val newsRepository: NewsRepository) : ViewModel() {
     private val _state = MutableStateFlow(ArticleUiState(loading = true))
     val state: StateFlow<ArticleUiState> = _state.asStateFlow()
 
-
-
-    @RequiresApi(Build.VERSION_CODES.O)
     fun getNews() = viewModelScope.launch(Dispatchers.IO) {
 
         newsRepository.getBreakingNews().collect {

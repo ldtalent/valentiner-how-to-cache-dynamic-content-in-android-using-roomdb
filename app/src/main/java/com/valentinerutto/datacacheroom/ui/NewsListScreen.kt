@@ -2,9 +2,6 @@ package com.valentinerutto.datacacheroom.ui
 
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
-import androidx.annotation.RequiresApi
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,9 +29,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.valentinerutto.datacacheroom.NewsViewModel
 import com.valentinerutto.datacacheroom.R
 import com.valentinerutto.datacacheroom.data.local.entities.NewsEntity
+import com.valentinerutto.datacacheroom.ui.navigation.NavigationItem
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -50,7 +49,7 @@ fun MainView(
         }
 
         if (newsUiState.error.isNullOrBlank().not()) {
-            ErrorScreen(modifier = Modifier.fillMaxSize(), newsUiState.error)
+            ErrorScreen(newsUiState,Modifier.fillMaxSize())
         }
 
         if (!newsUiState.article.isNullOrEmpty()) {
@@ -63,13 +62,13 @@ fun MainView(
 }
 
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NewsListScreen(
     onNewsItemSelected: (newsItemPosition: Int) -> Unit,
     modifier: Modifier = Modifier,
     newsEntity: List<NewsEntity>
 ) {
+
     LazyColumn(modifier = Modifier.fillMaxHeight()) {
         itemsIndexed(newsEntity) { index, news ->
             NewsArticleItem(
@@ -118,7 +117,6 @@ fun NewsArticleItem(modifier: Modifier, newsArticle: NewsEntity) {
             )
             Spacer(modifier = Modifier.padding(1.dp))
 
-
         }
     }
 }
@@ -144,17 +142,15 @@ fun LoadingView() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun ErrorScreen(
-    modifier: Modifier, errorMsg: String
-) {
+fun ErrorScreen(newsUiState: NewsViewModel.ArticleUiState,modifier:Modifier) {
+
     val vm = koinViewModel<NewsViewModel>()
 
     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
 
         Text(
-            text = errorMsg,
+            text = newsUiState.error,
             textAlign = TextAlign.Center,
             modifier = modifier,
             style = MaterialTheme.typography.bodyMedium
