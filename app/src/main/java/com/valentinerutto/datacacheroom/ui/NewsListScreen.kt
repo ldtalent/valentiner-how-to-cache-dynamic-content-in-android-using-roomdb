@@ -133,7 +133,6 @@ fun openUrl(sourceUrl: String) {
 @Composable
 fun LoadingView() {
     Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
-
         CircularProgressIndicator(
             modifier = Modifier.width(64.dp),
             color = lightColorScheme().tertiary,
