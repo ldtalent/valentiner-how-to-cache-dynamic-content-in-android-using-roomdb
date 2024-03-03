@@ -62,8 +62,6 @@ class NewsRepository(
         }
     }
 
-    private fun getSavedNews(): Flow<List<NewsEntity>> {
-        return flow { newsDao.getNewsList() }
-    }
+
 
 }

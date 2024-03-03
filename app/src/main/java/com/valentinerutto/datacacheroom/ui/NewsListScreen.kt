@@ -121,14 +121,6 @@ fun NewsArticleItem(modifier: Modifier, newsArticle: NewsEntity) {
     }
 }
 
-@Composable
-fun openUrl(sourceUrl: String) {
-    val context = LocalContext.current
-    val urlIntent = Intent(
-        Intent.ACTION_VIEW, Uri.parse(sourceUrl)
-    )
-    context.startActivity(urlIntent)
-}
 
 @Composable
 fun LoadingView() {
