@@ -14,11 +14,10 @@ import java.io.IOException
 class NewsRepository(
     private val apiService: ApiService, private val newsDao: NewsDao
 ) {
-    private val newsFlow: Flow<List<NewsEntity>>
+     val newsFlow: Flow<List<NewsEntity>>
         get() = newsDao.getNewsList()
 
     suspend fun getBreakingNews(): Flow<Resource<List<NewsEntity>>> = flow {
-        val r =newsFlow.asLiveData().value
         emit(Resource.Loading())
 
         try {

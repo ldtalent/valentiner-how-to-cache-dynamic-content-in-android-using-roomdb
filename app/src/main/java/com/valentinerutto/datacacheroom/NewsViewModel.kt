@@ -47,6 +47,14 @@ class NewsViewModel(private val newsRepository: NewsRepository) : ViewModel() {
         }
     }
 
+    fun getSavedNews() = viewModelScope.launch(Dispatchers.IO) {
+        newsRepository.newsFlow.collect {
+            setState {
+                copy(loading = false, article = it)
+            }
+        }
+    }
+
     private fun setState(stateReducer: ArticleUiState.() -> ArticleUiState) {
         viewModelScope.launch {
             _state.emit(stateReducer(state.value))

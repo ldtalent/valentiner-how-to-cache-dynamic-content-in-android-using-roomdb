@@ -18,6 +18,6 @@ interface NewsDao {
     fun getNewsList(): Flow<List<NewsEntity>>
 
     @Delete
-    fun deleteBookmark(newsEntity: NewsEntity)
+    fun delete(newsEntity: NewsEntity)
 
 }

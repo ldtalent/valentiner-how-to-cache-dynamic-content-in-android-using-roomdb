@@ -29,7 +29,10 @@ class MainActivity : ComponentActivity() {
 
     override fun onStart() {
         super.onStart()
-        viewmodel.getNews()
+
+            viewmodel.getNews()
+
+
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
