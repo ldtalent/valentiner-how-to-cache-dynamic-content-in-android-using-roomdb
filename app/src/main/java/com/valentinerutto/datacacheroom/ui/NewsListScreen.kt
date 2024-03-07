@@ -1,7 +1,5 @@
 package com.valentinerutto.datacacheroom.ui
 
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,48 +21,45 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.valentinerutto.datacacheroom.NewsViewModel
 import com.valentinerutto.datacacheroom.R
 import com.valentinerutto.datacacheroom.data.local.entities.NewsEntity
-import com.valentinerutto.datacacheroom.ui.navigation.NavigationItem
+import com.valentinerutto.datacacheroom.ui.composables.ConnectivityStatus
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MainView(
     newsUiState: NewsViewModel.ArticleUiState,
-    isConnected:Boolean,
+    isConnected: Boolean,
     onNewsItemSelected: (newsItemPosition: Int) -> Unit,
 ) {
-    if (!isConnected){
-        Text(text = "not online")
-        
-    }else {
 
-        Column(modifier = Modifier.fillMaxSize()) {
 
-            if (newsUiState.loading) {
-                LoadingView()
-            }
+    Column(modifier = Modifier.fillMaxSize()) {
 
-            if (newsUiState.error.isNullOrBlank().not()) {
-                ErrorScreen(newsUiState, Modifier.fillMaxSize())
-            }
+        ConnectivityStatus(isConnected = isConnected)
 
-            if (!newsUiState.article.isNullOrEmpty()) {
-                NewsListScreen(
-                    newsEntity = newsUiState.article, onNewsItemSelected = onNewsItemSelected
-                )
-            }
+        if (newsUiState.loading) {
+            LoadingView()
+        }
+
+        if (newsUiState.error.isNullOrBlank().not()) {
+            ErrorScreen(newsUiState, Modifier.fillMaxSize())
+        }
+
+        if (!newsUiState.article.isNullOrEmpty()) {
+            NewsListScreen(
+                newsEntity = newsUiState.article, onNewsItemSelected = onNewsItemSelected
+            )
         }
     }
 }
+
 
 
 @Composable
@@ -139,7 +134,7 @@ fun LoadingView() {
 }
 
 @Composable
-fun ErrorScreen(newsUiState: NewsViewModel.ArticleUiState,modifier:Modifier) {
+fun ErrorScreen(newsUiState: NewsViewModel.ArticleUiState, modifier: Modifier) {
 
     val vm = koinViewModel<NewsViewModel>()
 
