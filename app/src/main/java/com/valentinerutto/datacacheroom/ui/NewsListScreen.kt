@@ -39,26 +39,31 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun MainView(
     newsUiState: NewsViewModel.ArticleUiState,
+    isConnected:Boolean,
     onNewsItemSelected: (newsItemPosition: Int) -> Unit,
 ) {
+    if (!isConnected){
+        Text(text = "not online")
+        
+    }else {
 
-    Column(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier.fillMaxSize()) {
 
-        if (newsUiState.loading) {
-            LoadingView()
-        }
+            if (newsUiState.loading) {
+                LoadingView()
+            }
 
-        if (newsUiState.error.isNullOrBlank().not()) {
-            ErrorScreen(newsUiState,Modifier.fillMaxSize())
-        }
+            if (newsUiState.error.isNullOrBlank().not()) {
+                ErrorScreen(newsUiState, Modifier.fillMaxSize())
+            }
 
-        if (!newsUiState.article.isNullOrEmpty()) {
-            NewsListScreen(
-                newsEntity = newsUiState.article, onNewsItemSelected = onNewsItemSelected
-            )
+            if (!newsUiState.article.isNullOrEmpty()) {
+                NewsListScreen(
+                    newsEntity = newsUiState.article, onNewsItemSelected = onNewsItemSelected
+                )
+            }
         }
     }
-
 }
 
 

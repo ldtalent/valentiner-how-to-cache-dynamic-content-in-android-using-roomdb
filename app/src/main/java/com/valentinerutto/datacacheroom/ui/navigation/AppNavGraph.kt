@@ -1,6 +1,7 @@
 package com.valentinerutto.datacacheroom.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -9,6 +10,8 @@ import com.valentinerutto.datacacheroom.NewsViewModel
 import com.valentinerutto.datacacheroom.ui.ErrorScreen
 import com.valentinerutto.datacacheroom.ui.MainView
 import com.valentinerutto.datacacheroom.ui.NewsDetailScreen
+import com.valentinerutto.datacacheroom.ui.composables.connectivityState
+import com.valentinerutto.datacacheroom.utils.ConnectionState
 
 @Composable
 fun AppNavGraph(
@@ -21,8 +24,11 @@ fun AppNavGraph(
     ) {
 
         composable(route = NavigationItem.NewsList.route) {
+            val connection by connectivityState()
 
-            MainView(newsUiState = newsUiState, onNewsItemSelected = {
+            val isConnected = connection === ConnectionState.Available
+
+            MainView(newsUiState = newsUiState,isConnected, onNewsItemSelected = {
                 val route = NavigationItem.NewsDetails.createRoute(it)
                 navController.navigate(route)
             })
