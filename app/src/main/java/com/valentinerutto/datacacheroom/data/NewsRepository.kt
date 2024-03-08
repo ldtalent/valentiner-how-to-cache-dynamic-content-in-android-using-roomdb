@@ -6,10 +6,13 @@ import com.valentinerutto.datacacheroom.data.local.entities.NewsEntity
 import com.valentinerutto.datacacheroom.data.mappers.mapResponseToEntity
 import com.valentinerutto.datacacheroom.data.remote.Resource
 import com.valentinerutto.datacacheroom.data.remote.api.ApiService
+import com.valentinerutto.datacacheroom.utils.convertToDate
+import com.valentinerutto.datacacheroom.utils.todayInDate
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
+import java.time.LocalDate
 
 class NewsRepository(
     private val apiService: ApiService, private val newsDao: NewsDao
@@ -54,11 +57,26 @@ class NewsRepository(
 //        }
     }
 
-    private suspend fun fetchAndSaveNews() {
+    private suspend fun refreshData() {
         val remoteResponse = apiService.getBreakingNews()
-        if (remoteResponse.isSuccessful.not()) {
-            newsDao.saveNewsList(mapResponseToEntity(remoteResponse.body()!!)!!)
+        var oldDate:Long= 0
+        newsFlow.collect{
+            it.map {
+             oldDate=   it.publishedAt.toLong()
+            }
         }
+
+        if (remoteResponse.isSuccessful.not()) {
+            if (oldDate.shouldSync()){
+                newsDao.deleteAll()
+                newsDao.saveNewsList(mapResponseToEntity(remoteResponse.body()!!)!!)
+            }
+        }
+    }
+    private fun Long.shouldSync(): Boolean {
+        val today = todayInDate()
+        val syncData = convertToDate(this)
+        return syncData != today
     }
 
 
