@@ -32,3 +32,8 @@ fun convertToLong(date: String): Long = SimpleDateFormat(
 ).parse(date)?.time ?: 0L
 
 fun todayInDate(): String = convertToDate(todayInMillis())
+fun Long.shouldSync(): Boolean {
+    val today = todayInDate()
+    val syncData = convertToDate(this)
+    return syncData != today
+}

@@ -1,13 +1,10 @@
 package com.valentinerutto.datacacheroom
 
-import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.valentinerutto.datacacheroom.data.NewsRepository
 import com.valentinerutto.datacacheroom.data.local.entities.NewsEntity
 import com.valentinerutto.datacacheroom.data.remote.Resource
-import com.valentinerutto.datacacheroom.ui.composables.connectivityState
-import com.valentinerutto.datacacheroom.utils.ConnectionState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -57,6 +54,10 @@ class NewsViewModel(private val newsRepository: NewsRepository) : ViewModel() {
                 copy(loading = false, article = it)
             }
         }
+    }
+
+    suspend fun refreshData() {
+        newsRepository.refreshData()
     }
 
     private fun setState(stateReducer: ArticleUiState.() -> ArticleUiState) {
